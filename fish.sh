@@ -26,9 +26,9 @@ echo "starship init fish | source" >> ~/.config/fish/config.fish
 
 echo "🚀 Instalando o NPM para o Fish..."
 fish &
-curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish
+curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish &
 omf install nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash &
 nvm list-remote
 nvm install 18
 
