@@ -14,7 +14,7 @@ FONTS_PATH="$HOME/.local/share/fonts"
 echo "🚀 Instalando fontes... [FiraCode Nerd Font]"
 mkdir $FONTS_PATH
 
-wget -c -O $FONTS_PATH/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v2.2.2/FiraCode.zip
+wget -c -O $FONTS_PATH/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/FiraCode.zip
 
 sleep 5
 
@@ -28,9 +28,9 @@ echo "🚀 Instalando o NPM para o Fish..."
 fish &
 curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish
 omf install nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 nvm list-remote
-nvm install 16.17.1
+nvm install 18
 
 
 echo "🐟 O melhor Shell foi instalado com sucesso!"
