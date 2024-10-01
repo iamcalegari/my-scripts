@@ -14,21 +14,21 @@ FONTS_PATH="$HOME/.local/share/fonts"
 echo "🚀 Instalando fontes... [FiraCode Nerd Font]"
 mkdir $FONTS_PATH
 
-wget -c -O $FONTS_PATH/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/FiraCode.zip
+wget -c -O $FONTS_PATH/FiraCode.zip https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip
 
 sleep 5
 
-unzip -q $FONTS_PATHs/FiraCode.zip -d $FONTS_PATH/ && rm $FONTS_PATH/FiraCode.zip
+unzip -q $FONTS_PATH/FiraCode.zip -d $FONTS_PATH/ && rm $FONTS_PATH/FiraCode.zip
 
 echo "✨ Estilizando o seu fish-shell..."
 curl -sS https://starship.rs/install.sh | sh
 echo "starship init fish | source" >> ~/.config/fish/config.fish
 
 echo "🚀 Instalando o NPM para o Fish..."
-fish &
-curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish &
+fish 
+curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish 
 omf install nvm
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash &
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash 
 nvm list-remote
 nvm install 18
 
