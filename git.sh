@@ -2,6 +2,15 @@
 
 echo "🚀 Vamos configurar o seu git, chave ssh e mais..."
 
+PACKAGES='git'
+
+echo "🚀 Atualizando o sistema e instalando o fish e os pacotes necessários..."
+if [ -x "$(command -v apt-get)" ]; then sudo apt update && sudo apt upgrade && sudo apt-get install $PACKAGES
+elif [ -x "$(command -v dnf)" ];     then sudo dnf upgrade --refresh && sudo dnf install $PACKAGES
+elif [ -x "$(command -v zypper)" ];  then sudo zypper up && sudo zypper in $PACKAGES
+elif [ -x "$(command -v pacman)" ];  then sudo pacman -Syu && sudo pacman -Syu $PACKAGES
+fi
+
 touch ~/.npmrc
 echo "@tamborineapps:registry=https://npm.pkg.github.com/" >> ~/.npmrc
 
