@@ -3,9 +3,9 @@
 echo "🚀 Atualizando o sistema..."
 sudo pacman -Syu
 
-echo "🚀 Installando o MongoDB 6.0..."
+echo "🚀 Installando o MongoDB 8.x..."
 yay -S mongodb-bin 
-echo "✅ MongoDB 6.0 instalado com sucesso"
+echo "✅ MongoDB 8.x instalado com sucesso"
 
 echo "🚀 Configurndo replicaset MongoDB..."
 touch replicaset.sh
