@@ -41,7 +41,7 @@ curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install 
 omf install nvm
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/$NVM_LAST_RELEASE/install.sh | bash 
 nvm list-remote
-nvm install 18
+nvm install 22
 
 
 echo "🐟 O melhor Shell foi instalado com sucesso!"
