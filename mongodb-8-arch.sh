@@ -1,35 +1,62 @@
 #!/bin/bash
 
-echo "🚀 Atualizando o sistema..."
-sudo pacman -Syu
+# Sai imediatamente se um comando falhar
+set -e
 
-echo "🚀 Installando o MongoDB 8.x..."
-yay -S mongodb-bin 
-echo "✅ MongoDB 8.x instalado com sucesso"
+# Cores para melhor visualização no terminal (Combina com o estilo do Niri)
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
 
-echo "🚀 Configurndo replicaset MongoDB..."
-touch replicaset.sh
+echo -e "${BLUE}🚀 Atualizando o sistema (CachyOS)...${NC}"
+sudo pacman -Syu --noconfirm
 
-tamborine='"tamborine"'
-rs_initiate='"rs.initiate()"'
+# Verificar se o yay está instalado
+if ! command -v yay &> /dev/null; then
+    echo "❌ yay não encontrado. Por favor, instale um AUR helper."
+    exit 1
+fi
 
-echo """
-#!/bin/bash
+echo -e "${BLUE}🚀 Instalando MongoDB 8.x e Ferramentas...${NC}"
+# mongodb-bin para evitar horas de compilação; mongodb-tools-bin para mongodump/restore
+yay -S --noconfirm mongodb-bin mongodb-tools-bin
 
-sudo systemctl stop mongodb.service
+# --- Configuração do ReplicaSet ---
 
-sudo cp /etc/mongodb.conf /etc/mongodb.conf.bkp
-sudo sed -i -- 's/#replication:/replication:\n  replSetName: $tamborine/g' /etc/mongodb.conf
-cat /etc/mongodb.conf
+echo -e "${BLUE}🚀 Configurando MongoDB para ReplicaSet...${NC}"
 
-sudo systemctl start mongodb.service
-sleep 1
-sudo systemctl status mongodb.service &
-sleep 2
-mongosh --eval=$rs_initiate
+# Parar o serviço para edição segura
+sudo systemctl stop mongodb
 
-""" >> replicaset.sh
+# Backup da config original
+if [ ! -f /etc/mongodb.conf.bkp ]; then
+    sudo cp /etc/mongodb.conf /etc/mongodb.conf.bkp
+fi
 
-chmod +x replicaset.sh
-./replicaset.sh
-echo "✅ Replicaset configurada com sucesso"
+# Ajustando o mongodb.conf
+# Removemos qualquer configuração de replication antiga e adicionamos a nova
+sudo sed -i '/replication:/d' /etc/mongodb.conf
+sudo sed -i '/replSetName:/d' /etc/mongodb.conf
+
+# Adiciona a configuração no final do arquivo de forma limpa
+sudo bash -c "cat >> /etc/mongodb.conf" <<EOF
+replication:
+  replSetName: "tamborine"
+EOF
+
+echo -e "${GREEN}✅ Configuração aplicada em /etc/mongodb.conf${NC}"
+
+# Reiniciar e habilitar
+echo -e "${BLUE}🚀 Reiniciando o serviço...${NC}"
+sudo systemctl enable --now mongodb
+
+# Esperar o banco subir totalmente antes de rodar o mongosh
+echo "⏳ Aguardando o MongoDB iniciar..."
+until mongosh --eval "db.adminCommand({ping:1})" &>/dev/null; do
+  sleep 2
+done
+
+echo -e "${BLUE}🚀 Inicializando ReplicaSet (rs.initiate())...${NC}"
+mongosh --eval "rs.initiate()"
+
+echo -e "${GREEN}✨ Tudo pronto! MongoDB 8.x instalado e ReplicaSet 'tamborine' ativo.${NC}"
