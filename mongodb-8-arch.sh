@@ -46,6 +46,11 @@ EOF
 
 echo -e "${GREEN}✅ Configuração aplicada em /etc/mongodb.conf${NC}"
 
+# Garantir permissões corretas
+sudo chown -R mongodb:mongodb /var/lib/mongodb
+sudo chown -R mongodb:mongodb /var/log/mongodb
+sudo chown mongodb:mongodb /etc/mongodb.conf
+
 # Reiniciar e habilitar
 echo -e "${BLUE}🚀 Reiniciando o serviço...${NC}"
 sudo systemctl enable --now mongodb
